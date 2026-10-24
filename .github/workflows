@@ -1,1 +1,30 @@
+name: Build Desktop App
 
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+      
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Installer les dépendances
+        working-directory: ./Logiciel_Desktop
+        run: npm install
+      
+      - name: Compiler l'EXE
+        working-directory: ./Logiciel_Desktop
+        run: npm run dist
+      
+      - name: Téléverser le logiciel
+        uses: actions/upload-artifact@v4
+        with:
+          name: UNAMDD-Desktop-Windows
+          path: Logiciel_Desktop/dist/*
